@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import ApiResponse from "./utils/ApiResponse.js";
 
 const app = express();
 
@@ -18,8 +19,13 @@ app.use(express.static("public"));
 import userRouter from "./routes/user.routes.js";
 
 // routes declaration
-app.use("/api/v1/users", userRouter);
+app.get("/", (req, res) => {
 
+    // Send the response
+    res.status(303).json(new ApiResponse(true, "data is here", "message is good"));
+})
+
+app.use("/api/v1/users", userRouter);
 
 
 

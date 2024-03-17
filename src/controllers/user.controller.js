@@ -27,6 +27,7 @@ const registerUser = wrapAsync(async (req, res) => {
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
     if (!avatarLocalPath) throw new ApiError(400, "Avatar file is required");
+    if (!coverImageLocalPath) throw new ApiError(400, "Avatar file is required");
 
     // upload them to cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath);
@@ -49,7 +50,7 @@ const registerUser = wrapAsync(async (req, res) => {
     );
 
     // check for user creation 
-    if (!createdUser) throw new ApiError(500, "Something went wrong while registering the User")
+    if (!createdUser) throw new ApiError(500, "Something went wrong while registering user")
 
     // return response
     return res.status(201).json(
