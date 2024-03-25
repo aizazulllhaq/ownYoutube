@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, logoutUser, registerUser, userProfile } from "../controllers/user.controller.js";
+import { getUserWatchHistory, loginUser, logoutUser, registerUser, userProfile } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import isUserLoggedIn from "../utils/Auth.Middleware.js";
 
@@ -22,8 +22,11 @@ userRouter.route("/register")
 
 userRouter.post("/login", loginUser)
 
+
+// Secure Routes 
 userRouter.post("/logout", isUserLoggedIn, logoutUser);
 
-userRouter.get("/profile", userProfile);
+userRouter.get("/profile", isUserLoggedIn, userProfile);
 
+userRouter.get('/history', isUserLoggedIn, getUserWatchHistory);
 export default userRouter;

@@ -4,9 +4,9 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import generateAccessTokenAndRefreshToken from "../utils/generateTokens.js";
-import jwt from 'jsonwebtoken'
+import { Types } from "mongoose";
 
-const registerUser = wrapAsync(async (req, res) => {
+export const registerUser = wrapAsync(async (req, res) => {
 
     // get user detail from frontend
     const { username, email, password } = req.body;
@@ -59,7 +59,7 @@ const registerUser = wrapAsync(async (req, res) => {
     )
 })
 
-const loginUser = wrapAsync(async (req, res) => {
+export const loginUser = wrapAsync(async (req, res) => {
     const { email, password } = req.body;
 
     if (!(email && password)) throw new ApiError(400, "Email & Password are required");
@@ -90,7 +90,7 @@ const loginUser = wrapAsync(async (req, res) => {
 
 // Secure Controllers
 
-const updateUser = wrapAsync(async (req, res) => {
+export const updateUser = wrapAsync(async (req, res) => {
     // get fields from request body
     // check which fields given to change or when some not given then remain its old value in it
     // check if email is already given to be change , then do a complete process of emal verification
@@ -98,23 +98,17 @@ const updateUser = wrapAsync(async (req, res) => {
     // return new updated user
 });
 
-const logoutUser = wrapAsync(async (req, res) => {
+export const logoutUser = wrapAsync(async (req, res) => {
     // clear user cookies ( accessToken ) only
     // return response with logout msg
 });
 
-import mongoose from 'mongoose'
-
-const userProfile = wrapAsync(async (req, res) => {
-
-    const token = req.cookies.accessToken
-
-    const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+export const userProfile = wrapAsync(async (req, res) => {
 
     const result = await User.aggregate([
         {
             $match: {
-                _id: new mongoose.Types.ObjectId(user.id),
+                _id: new Types.ObjectId(req.user.id),
             }
         },
         {
@@ -171,15 +165,12 @@ const userProfile = wrapAsync(async (req, res) => {
         )
 });
 
-const getUserWatchHistory = wrapAsync(async (req, res) => {
-    const token = req.cookies.accessToken
-
-    const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+export const getUserWatchHistory = wrapAsync(async (req, res) => {
 
     const result = await User.aggregate([
         {
             $match: {
-                _id: new mongoose.Types.ObjectId(user.id)
+                _id: new mongoose.Types.ObjectId(req.user.id)
             }
         },
         {
@@ -228,13 +219,3 @@ const getUserWatchHistory = wrapAsync(async (req, res) => {
             new ApiResponse(true, "Watch History", result)
         )
 });
-
-
-export {
-    registerUser,
-    loginUser,
-    updateUser,
-    logoutUser,
-    userProfile,
-    getUserWatchHistory
-}
