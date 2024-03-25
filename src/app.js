@@ -20,9 +20,8 @@ import userRouter from "./routes/user.routes.js";
 
 // routes declaration
 app.get("/", (req, res) => {
-
     // Send the response
-    res.status(303).json(new ApiResponse(true, "data is here", "message is good"));
+    res.status(303).json(new ApiResponse(true, "Root Endpoint", {}));
 })
 
 app.use("/api/v1/users", userRouter);

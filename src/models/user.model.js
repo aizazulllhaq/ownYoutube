@@ -11,12 +11,12 @@ const userSchema = new Schema({
         trim: true,
         index: true, // Field to be Searchble
     },
-    fullname: {
-        type: String,
-        required: true,
-        lowercase: true,
-        trim: true,
-    },
+    // fullname: {
+    //     type: String,
+    //     required: true,
+    //     lowercase: true,
+    //     trim: true,
+    // },
     email: {
         type: String,
         required: true,
