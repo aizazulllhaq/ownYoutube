@@ -92,6 +92,7 @@ export const loginUser = wrapAsync(async (req, res) => {
 
 export const updateUser = wrapAsync(async (req, res) => {
     // get fields from request body
+    
     // check which fields given to change or when some not given then remain its old value in it
     // check if email is already given to be change , then do a complete process of emal verification
     // update user details & and get updated user details
